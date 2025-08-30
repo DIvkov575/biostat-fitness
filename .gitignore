@@ -2,4 +2,7 @@
 *.iml
 .DS_Store
 
-data/
+
+data/coupling_models
+data/processed_data
+data/unirep_weights
