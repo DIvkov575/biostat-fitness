@@ -14,3 +14,12 @@ processed_data/* \
 
 unirep_weights - Unirep model weights
 
+
+
+TODO - embeddings
+- Try differnet embedding models
+- Try different kernels
+
+
+TODO - Direct
+- Kmers
