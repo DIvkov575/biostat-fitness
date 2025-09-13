@@ -23,3 +23,20 @@ TODO - embeddings
 
 TODO - Direct
 - Kmers
+
+
+# Note - (most gaussian) dataset:  UBE4B_MOUSE_Klevit2013-nscor_log2_ratio
+print()
+print("best pair: ", min(score_collection, key=lambda x: x[0]))
+print("array: ", np.array([x[0] for x in score_collection]))
+print("std: ", np.array([x[0] for x in score_collection]).std())
+
+
+# Todo
+# opt
+# - ADkernel
+# - Kmer Kernel
+# - Hamming Kernel
+# - Recreate Coupling model
+# - Recreate Unirep
+# - Some weights of EsmModel were not initialized from the model checkpoint at facebook/esm2_t6_8M_UR50D and are newly initialized: ['pooler.dense.bias', 'pooler.dense.weight'] You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
