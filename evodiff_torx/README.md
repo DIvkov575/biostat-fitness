@@ -33,16 +33,27 @@ in `evodiff_torx/requirements.txt`; the repo-root `requirements.txt`
 - `train.py` — the end-to-end training loop. `train_and_evaluate(family, ...)`
   loads a family, trains the denoiser on the reconstruction cross-entropy, and
   returns a dict of accuracies; `--family` runs it from the CLI.
+- `benchmark.py` — the multi-family driver. Runs `train_and_evaluate` over
+  `FAMILIES` and prints the comparison table below; exits non-zero if any family
+  fails to beat its PSSM baseline.
 
 ## Training
+
+One family:
 
 ```bash
 evodiff_torx/.venv/bin/python evodiff_torx/train.py --family YAP1_HUMAN
 ```
 
+All three families side by side:
+
+```bash
+evodiff_torx/.venv/bin/python evodiff_torx/benchmark.py
+```
+
 Defaults: 200 diffusion timesteps, 1000 Adam steps at `lr=1e-3`, batch 128, a
 4000-sequence training subsample and 400 held-out sequences. Each family trains
-in 15–30s on CPU.
+in 15–30s on CPU, so the full benchmark is under two minutes.
 
 Two accuracies are reported, both "fraction of held-out positions where the
 predicted residue is correct":
@@ -53,7 +64,7 @@ predicted residue is correct":
 - **PSSM baseline** — each column's most frequent training residue, always, with
   no view of the input.
 
-Measured with the defaults above:
+Measured with the defaults above, as printed by `benchmark.py`:
 
 | family | L | model | PSSM | margin |
 |---|---|---|---|---|
