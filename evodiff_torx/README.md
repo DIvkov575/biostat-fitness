@@ -24,7 +24,14 @@ in `evodiff_torx/requirements.txt`; the repo-root `requirements.txt`
   stack of column-stochastic matrices. Corrupts over the 21 real states
   (amino acids + gap), *excluding* the mask token — see `NUM_DIFFUSION_STATES`.
 
-Later work (Torx forward-corruption sampler, training loop) builds on these.
+- `corruption.py` — the Torx forward-corruption sampler. `ForwardCorruption(seq_len, num_timesteps)`
+  bundles the schedule with a `TiledFactor(PMarkov(...))` gate; `corrupt_batch(key, tokens)`
+  returns `(corrupted, timesteps)` for a `(B, L)` batch of original sequences,
+  drawing one timestep per sequence as EvoDiff's `D3PMCollater` does.
+- `denoiser.py` — reverse-denoising network: dilated 1-D convolutions mapping a
+  corrupted sequence plus a timestep to per-position logits.
+
+Later work (the training loop) builds on these.
 
 ## Setup
 
