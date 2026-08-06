@@ -1,0 +1,9 @@
+# Dependencies for the standalone evodiff_torx demo only.
+# The repo-root requirements.txt (torch/transformers/gpytorch) is unrelated.
+jax
+equinox
+optax
+git+https://github.com/DIvkov575/torx@main
+
+# dev
+pytest
