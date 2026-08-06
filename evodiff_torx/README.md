@@ -19,9 +19,12 @@ in `evodiff_torx/requirements.txt`; the repo-root `requirements.txt`
   `tokenize` / `untokenize` / `one_hot`.
 - `data.py` — `.a2m` alignment parser returning fixed-width match-column
   sequences as a list of strings.
+- `schedule.py` — D3PM uniform-transition noise schedule:
+  `uniform_transition_schedule(T)` returns `(q, q_bar)`, each a `(T, K, K)`
+  stack of column-stochastic matrices. Corrupts over the 21 real states
+  (amino acids + gap), *excluding* the mask token — see `NUM_DIFFUSION_STATES`.
 
-Later work (noise schedule, Torx forward-corruption sampler, denoiser network,
-training loop) builds on these.
+Later work (Torx forward-corruption sampler, training loop) builds on these.
 
 ## Setup
 
