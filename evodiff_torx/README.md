@@ -30,8 +30,40 @@ in `evodiff_torx/requirements.txt`; the repo-root `requirements.txt`
   drawing one timestep per sequence as EvoDiff's `D3PMCollater` does.
 - `denoiser.py` — reverse-denoising network: dilated 1-D convolutions mapping a
   corrupted sequence plus a timestep to per-position logits.
+- `train.py` — the end-to-end training loop. `train_and_evaluate(family, ...)`
+  loads a family, trains the denoiser on the reconstruction cross-entropy, and
+  returns a dict of accuracies; `--family` runs it from the CLI.
 
-Later work (the training loop) builds on these.
+## Training
+
+```bash
+evodiff_torx/.venv/bin/python evodiff_torx/train.py --family YAP1_HUMAN
+```
+
+Defaults: 200 diffusion timesteps, 1000 Adam steps at `lr=1e-3`, batch 128, a
+4000-sequence training subsample and 400 held-out sequences. Each family trains
+in 15–30s on CPU.
+
+Two accuracies are reported, both "fraction of held-out positions where the
+predicted residue is correct":
+
+- **model** — corrupt the held-out sequences exactly as in training
+  (`corrupt_batch`, one random timestep per sequence), then argmax the denoiser's
+  logits.
+- **PSSM baseline** — each column's most frequent training residue, always, with
+  no view of the input.
+
+Measured with the defaults above:
+
+| family | L | model | PSSM | margin |
+|---|---|---|---|---|
+| YAP1_HUMAN | 31 | 0.7750 | 0.5292 | +0.2458 |
+| RL401_YEAST | 71 | 0.7239 | 0.6298 | +0.0942 |
+| PABP_YEAST | 82 | 0.6034 | 0.3794 | +0.2241 |
+
+The model sees the corrupted sequence, so positions noise left untouched are
+free — echoing the input scores ~0.54. The margin over the PSSM is what measures
+context modeling beyond per-column marginals.
 
 ## Setup
 
